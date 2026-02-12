@@ -1,0 +1,82 @@
+#include <iostream>
+using namespace std;
+ 
+// Описуємо структуру "Час"
+struct Time {
+    int hours;   // Години
+    int minutes; // Хвилини
+    int
+seconds; // Секунди
+};
+ 
+// Функція для додавання інтервалу до часу
+void addTime(const Time& A, Time& B, int interval) {
+    // Переводимо час A у секунди
+    int totalSeconds = A.hours * 3600 + A.minutes * 60 + A.seconds + interval;
+ 
+    // Враховуємо
+перехід через добу (24 години)
+   totalSeconds %= 86400; // 86400 секунд = 24 години
+ 
+    //
+Знаходимо нові години, хвилини та секунди
+    B.hours = (totalSeconds / 3600) % 24;
+    B.minutes = (totalSeconds % 3600) / 60;
+    B.seconds = totalSeconds % 60;
+}
+ 
+// Функція для обчислення часової різниці між двома моментами часу у форматі Time
+Time calculateTimeInterval(const Time& A, const Time& B) {
+    // Переводимо часи A
+і B у секунди
+    int totalSecondsA = A.hours * 3600 + A.minutes * 60 + A.seconds;
+    int totalSecondsB = B.hours * 3600 + B.minutes * 60 + B.seconds;
+ 
+    // Обчислюємо
+різницю в секундах (враховуємо перехід через добу)
+    int intervalInSeconds = totalSecondsB - totalSecondsA;
+    if (intervalInSeconds < 0) {
+        intervalInSeconds += 86400; // Якщо B передує A, додаємо 24 години
+    }
+ 
+    // Перетворюємо
+інтервал у формат "години, хвилини, секунди"
+    Time interval;
+    interval.hours = intervalInSeconds / 3600;
+    interval.minutes = (intervalInSeconds %
+3600) / 60;
+    interval.seconds = intervalInSeconds % 60;
+ 
+    return interval;
+}
+ 
+// Функція для виведення часу
+void printTime(const Time& t) {
+    cout << t.hours << " hour, " << t.minutes << " minute, " << t.seconds << " second" << endl;
+}
+ 
+int main() {
+    Time A = { 23, 45, 50 }; // Час A: 23 години, 45 хвилин, 50 секунд
+    Time B;                  // Час B
+ 
+    int interval = 5000;     // Інтервал у секундах, який потрібно додати
+ 
+    // Додаємо інтервал
+до часу A та зберігаємо результат у B
+    addTime(A, B, interval);
+    cout << "Time A: ";
+    printTime(A);
+    cout << "Time B after adding
+interval: ";
+    printTime(B);
+ 
+    // Обчислюємо часовий інтервал між часами A і B у форматі Time
+    Time timeDiff = calculateTimeInterval(A, B);
+    cout << "Time interval between
+A and B: ";
+    printTime(timeDiff);
+ 
+    return 0;
+}
+ 
+ 
